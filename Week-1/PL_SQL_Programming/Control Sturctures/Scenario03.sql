@@ -1,0 +1,16 @@
+DECLARE
+    PRESENT_DATE DATE := SYSDATE;
+    FUTURE_DATE DATE := SYSDATE + 30;
+BEGIN
+    FOR USERS IN (
+        SELECT CUSTOMER_ID,LOAN_ID,DUEDATE
+        FROM LOANS
+        WHERE DUEDATE BETWEEN PRESENT_DATE AND FUTURE_DATE
+    ) LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            'Reminder: Loan ' || USERS.LOAN_ID || ' for customer ' || USERS.CUSTOMER_ID ||
+            ' is due on ' || TO_CHAR(USERS.DUEDATE, 'DD-MON-YYYY'));
+    END LOOP;
+    COMMIT;
+END;
+/
